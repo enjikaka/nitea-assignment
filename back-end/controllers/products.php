@@ -11,11 +11,16 @@ class ProductsController
         $this->product = new Product();
     }
 
+    private function jsonResponse($data, $statusCode = 200): void
+    {
+        http_response_code($statusCode);
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
     public function getProductsSchema(): void
     {
-        http_response_code(200);
-        header('Content-Type: application/json');
-        echo json_encode($this->product->getSchema());
+        $this->jsonResponse($this->product->getSchema());
     }
 
     public function getAllProducts(): void
@@ -23,19 +28,16 @@ class ProductsController
         try {
             $result = $this->product->getAllProducts();
 
-            http_response_code(200);
-            header('Content-Type: application/json');
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "success",
                 "message" => "Successfully got all products",
                 "data" => $result
             ]);
         } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "error",
                 "message" => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -45,20 +47,18 @@ class ProductsController
             $result = $this->product->getProductById($productId);
 
             $message = empty($result) ? "Product not found" : "Successfully retrieved product data";
+            $statusCode = empty($result) ? 404 : 200;
 
-            http_response_code(empty($result) ? 404 : 200);
-            header('Content-Type: application/json');
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "success",
                 "message" => $message,
                 "data" => $result
-            ]);
+            ], $statusCode);
         } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "error",
                 "message" => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -75,23 +75,22 @@ class ProductsController
             $result = $this->product->getProductByName($name);
             if (empty($result)) {
                 $message = "Adding new product failed";
+                $statusCode = 400;
             } else {
                 $message = "Successfully added new product";
+                $statusCode = 201;
             }
 
-            http_response_code(empty($result) ? 400 : 201);
-            header('Content-Type: application/json');
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "success",
                 "message" => $message,
                 "data" => $result
-            ]);
+            ], $statusCode);
         } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "error",
                 "message" => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -99,32 +98,28 @@ class ProductsController
     {
         try {
             if (empty($this->product->getProductById($productId))) {
-                http_response_code(404);
-                echo json_encode([
+                $this->jsonResponse([
                     "status" => "success",
                     "message" => "Product not found"
-                ]);
+                ], 404);
                 exit;
             }
-
 
             $inputData = json_decode(file_get_contents('php://input'), true);
 
             if ($inputData === null) {
-                http_response_code(400);
-                echo json_encode([
+                $this->jsonResponse([
                     "status" => "error",
                     "message" => "Data input is empty"
-                ]);
+                ], 400);
                 exit;
             }
 
             if (!isset($inputData['name']) && !isset($inputData['price']) && !isset($inputData['categories']) && !isset($inputData['image'])) {
-                http_response_code(422);
-                echo json_encode([
+                $this->jsonResponse([
                     "status" => "error",
                     "message" => "required data missing"
-                ]);
+                ], 422);
                 exit;
             }
 
@@ -146,19 +141,16 @@ class ProductsController
 
             $result = $this->product->getProductById($productId);
 
-            http_response_code(200);
-            header('Content-Type: application/json');
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "success",
                 "message" => "Successfully updated product data",
                 "data" => $result
             ]);
         } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "error",
                 "message" => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -166,28 +158,24 @@ class ProductsController
     {
         try {
             if (empty($this->product->getProductById($productId))) {
-                http_response_code(404);
-                echo json_encode([
+                $this->jsonResponse([
                     "status" => "success",
                     "message" => "Product not found"
-                ]);
+                ], 404);
                 exit;
             }
 
             $this->product->deleteProductById($productId);
 
-            http_response_code(200);
-            header('Content-Type: application/json');
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "success",
                 "message" => "Successfully deleted product"
             ]);
         } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode([
+            $this->jsonResponse([
                 "status" => "error",
                 "message" => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 }
