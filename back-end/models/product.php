@@ -15,6 +15,31 @@ class Product {
         }
     }
 
+    public function getSchema() : ?array {
+        return [
+            "type" => "object",
+            "required" => ["name", "image", "price", "categories"],
+            "properties" => [
+                "name" => [
+                    "type" => "string",
+                    "description" => "The name of the product"
+                ],
+                "image" => [
+                    "type" => "string",
+                    "description" => "URL or path to the product image"
+                ],
+                "price" => [
+                    "type" => "string",
+                    "description" => "The price of the product"
+                ],
+                "categories" => [
+                    "type" => "string",
+                    "description" => "List of categories the product belongs to"
+                ]
+            ]
+        ];
+    }
+
     public function getAllProducts() : ?array {
         try {
             $query = "SELECT * FROM products";

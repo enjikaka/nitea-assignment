@@ -11,6 +11,13 @@ class ProductsController
         $this->product = new Product();
     }
 
+    public function getProductsSchema(): void
+    {
+        http_response_code(200);
+        header('Content-Type: application/json');
+        echo json_encode($this->product->getSchema());
+    }
+
     public function getAllProducts(): void
     {
         try {

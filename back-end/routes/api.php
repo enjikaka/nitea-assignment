@@ -17,6 +17,15 @@ if ($requestUri == "/") {
             sendResponse405();
             break;
     }
+} elseif ($requestUri == "/products.schema.json") {
+    switch ($requestMethod) {
+        case "GET":
+            $productsController->getProductsSchema();
+            break;
+        default:
+            sendResponse405();
+            break;
+    }
 } elseif ($requestUri == "/products") {
     switch ($requestMethod) {
         case "GET":
