@@ -1,3 +1,5 @@
+import './product-item.js';
+
 const html = String.raw;
 
 class ProductList extends HTMLElement {
@@ -20,24 +22,28 @@ class ProductList extends HTMLElement {
     }
 
     render() {
+        const sDOM = this.attachShadow({ mode: 'closed' });
 
         const productItems = this.products.map(product => html`
             <li>
-                <product-item>
+                <product-item product-id="${product.id}">
                     <h2 slot="name">${product.name}</h2>
                     <p slot="price">${product.price}</p>
                     <p slot="categories">${product.categories}</p>
                     <img slot="image" src="${product.image}" alt="${product.name}">
                 </product-item>
             </li>
-        `);
+        `).join('');
 
-        this.innerHTML = html`
+        sDOM.innerHTML = html`
             <style>
-                :root {
+                ol {
+                    list-style: none;
                     display: flex;
                     flex-flow: column nowrap;
                     gap: 1rem;
+                    padding: 0 1rem;
+                    margin: 0;
                 }
             </style>
             <ol>

@@ -52,7 +52,7 @@ class ProductsController
             $this->jsonResponse([
                 "status" => "success",
                 "message" => $message,
-                "data" => $result
+                "data" => $result[0]
             ], $statusCode);
         } catch (Exception $e) {
             $this->jsonResponse([

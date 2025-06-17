@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - Frukthandlaren</title>
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <header>
+      <strong>Frukthandlaren</strong>
+    </header>
+    <main>
+      <h1>Redigera produkt</h1>
+      <edit-form
+        schema-url="http://localhost:8080/products.schema.json"
+        action-url="http://localhost:8080/products"
+        method="PATCH"
+      ></edit-form>
+    </main>
+    <script type="module" src="js/pages/edit-product.js"></script>
+  </body>
+</html>
