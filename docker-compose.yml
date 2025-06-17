@@ -1,0 +1,29 @@
+services:
+  db:
+    image: mysql:9.3.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: dev_password
+    ports:
+      - 3306:3306
+    volumes:
+      - ./test/products.sql:/docker-entrypoint-initdb.d/init.sql:ro
+  api:
+    build:
+      context: ./docker/php-apache-pdo
+      dockerfile: Dockerfile
+    volumes:
+      - ./back-end:/var/www/html
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+  web:
+    image: nginx:latest
+    volumes:
+      - ./front-end:/usr/share/nginx/html
+    ports:
+      - 8081:80

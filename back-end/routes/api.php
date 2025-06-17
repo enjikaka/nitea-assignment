@@ -1,0 +1,58 @@
+<?php
+
+require_once __DIR__ . '/../controllers/products.php';
+
+$productsController = new ProductsController();
+
+$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$requestMethod = $_SERVER['REQUEST_METHOD'];
+
+
+if ($requestUri == "/") {
+    switch ($requestMethod) {
+        case "GET":
+            echo "Welcome to the product API!";
+            break;
+        default:
+            sendResponse405();
+            break;
+    }
+} elseif ($requestUri == "/products") {
+    switch ($requestMethod) {
+        case "GET":
+            $productsController->getAllProducts();
+            break;
+        case "POST":
+            $productsController->addNewProduct();
+            break;
+        default:
+            sendResponse405();
+            break;
+    }
+} elseif (preg_match('#^/products/(\d+)$#', $requestUri, $matches)) {
+    $productId = $matches[1];
+    switch ($requestMethod) {
+        case "GET":
+            $productsController->getProductById($productId);
+            break;
+        case "PATCH":
+            $productsController->editProductData($productId);
+            break;
+        case "DELETE":
+            $productsController->deleteProductById($productId);
+            break;
+        default:
+            sendResponse405();
+            break;
+    }
+} else {
+    http_response_code(404);
+    echo "Error 404! No route found!";
+}
+
+
+function sendResponse405()
+{
+    http_response_code(405);
+    echo json_encode(["message" => "Method Not Allowed"]);
+}
