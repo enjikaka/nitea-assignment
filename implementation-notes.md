@@ -8,3 +8,8 @@
 
 - Har nu en scaffold till REST API i PHP baserat på https://github.com/FarrelAD/Basic-PHP-RESTful-API
 - Konfigurerade docker-compose att starta databasen med lite exempeldata som lever i test/products.sql
+
+## 2025-06-18 20:26
+
+- Har uppdaterat UI:et till att efterlikna Material Design 3 en gnutta.
+- Ändrade PHP-routingen till switch cases och lite snyggare handler-funktioner; så det känns mer som NodeJS/Express.
