@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Product - Frukthandlaren</title>
+    <title>Redigera produkt - Frukthandlaren</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/pages/edit-product.css">
   </head>
   <body>
-    <header>
-      <strong>Frukthandlaren</strong>
-    </header>
+    <app-header></app-header>
     <main>
-      <h1>Redigera produkt</h1>
+      <h1>Redigera</h1>
+      <product-item></product-item>
       <edit-form
         schema-url="http://localhost:8080/products.schema.json"
         action-url="http://localhost:8080/products"

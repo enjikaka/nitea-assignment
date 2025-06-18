@@ -58,7 +58,7 @@ function createInput(key, field, isRequired) {
                     ${field.description ? `placeholder="${field.description}"` : ''}
                 >
             `;
-        
+
         case 'number':
             return `
                 <input type="number"
@@ -67,7 +67,7 @@ function createInput(key, field, isRequired) {
                     ${field.minimum !== undefined ? `min="${field.minimum}"` : ''}
                 >
             `;
-        
+
         default:
             return `
                 <input type="text"

@@ -1,6 +1,5 @@
 import { schemaToForm } from '../helpers/schema-to-form.js';
-
-const html = String.raw;
+import { html } from '../helpers/utils.js';
 
 class EditForm extends HTMLElement {
     constructor() {
@@ -25,6 +24,21 @@ class EditForm extends HTMLElement {
         const product = await response.json();
 
         return product.data;
+    }
+
+    fillForm(product) {
+        const form = this.sDOM.querySelector('form');
+        const formData = new FormData(form);
+
+        formData.forEach((value, key) => {
+            form.querySelector(`[name="${key}"]`).value = product[key];
+        });
+
+        if (form.querySelector('input[name="id"]')) {
+            form.querySelector('input[name="id"]').value = product.id;
+        } else {
+            form.innerHTML += html`<input type="hidden" name="id" value="${product.id}">`;
+        }
     }
 
     async fetchSchema() {
@@ -57,17 +71,6 @@ class EditForm extends HTMLElement {
             const product = await this.fetchProduct();
             this.fillForm(product);
         }
-    }
-
-    fillForm(product) {
-        const form = this.sDOM.querySelector('form');
-        const formData = new FormData(form);
-
-        console.log(product);
-
-        formData.forEach((value, key) => {
-            form.querySelector(`[name="${key}"]`).value = product[key];
-        });
     }
 }
 

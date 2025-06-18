@@ -1,6 +1,7 @@
 import './product-item.js';
 
-const html = String.raw;
+import { renderProductItemElement } from '../helpers/render-product-item-element.js';
+import { html } from '../helpers/utils.js';
 
 class ProductList extends HTMLElement {
     constructor() {
@@ -24,16 +25,10 @@ class ProductList extends HTMLElement {
     render() {
         const sDOM = this.attachShadow({ mode: 'closed' });
 
-        const productItems = this.products.map(product => html`
-            <li>
-                <product-item product-id="${product.id}">
-                    <h2 slot="name">${product.name}</h2>
-                    <p slot="price">${product.price}</p>
-                    <p slot="categories">${product.categories}</p>
-                    <img slot="image" src="${product.image}" alt="${product.name}">
-                </product-item>
-            </li>
-        `).join('');
+        const productItems = this.products
+            .map(product => renderProductItemElement(product))
+            .map(productItem => `<li>${productItem}</li>`)
+            .join('');
 
         sDOM.innerHTML = html`
             <style>
