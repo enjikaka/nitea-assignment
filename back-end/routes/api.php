@@ -19,26 +19,34 @@ $productsController = new ProductsController();
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-
-if ($requestUri == "/") {
+function handleIndexRoute($requestMethod)
+{
     switch ($requestMethod) {
         case "GET":
             echo "Welcome to the product API!";
             break;
         default:
-            sendResponse405();
+            handleMethodNotAllowedRoute();
             break;
     }
-} elseif ($requestUri == "/products.schema.json") {
+}
+
+function handleProductsSchemaRoute($requestMethod)
+{
+    global $productsController;
     switch ($requestMethod) {
         case "GET":
             $productsController->getProductsSchema();
             break;
         default:
-            sendResponse405();
+            handleMethodNotAllowedRoute();
             break;
     }
-} elseif ($requestUri == "/products") {
+}
+
+function handleProductsRoute($requestMethod)
+{
+    global $productsController;
     switch ($requestMethod) {
         case "GET":
             $productsController->getAllProducts();
@@ -47,11 +55,14 @@ if ($requestUri == "/") {
             $productsController->addNewProduct();
             break;
         default:
-            sendResponse405();
+            handleMethodNotAllowedRoute();
             break;
     }
-} elseif (preg_match('#^/products/(\d+)$#', $requestUri, $matches)) {
-    $productId = $matches[1];
+}
+
+function handleProductRoute($requestMethod, $productId)
+{
+    global $productsController;
     switch ($requestMethod) {
         case "GET":
             $productsController->getProductById($productId);
@@ -63,17 +74,38 @@ if ($requestUri == "/") {
             $productsController->deleteProductById($productId);
             break;
         default:
-            sendResponse405();
+            handleMethodNotAllowedRoute();
             break;
     }
-} else {
+}
+
+function handleNotFoundRoute()
+{
     http_response_code(404);
     echo "Error 404! No route found!";
 }
 
-
-function sendResponse405()
+function handleMethodNotAllowedRoute()
 {
     http_response_code(405);
     echo json_encode(["message" => "Method Not Allowed"]);
+}
+
+
+switch (true) {
+    case $requestUri == "/":
+        handleIndexRoute($requestMethod);
+        break;
+    case $requestUri == "/products.schema.json":
+        handleProductsSchemaRoute($requestMethod);
+        break;
+    case $requestUri == "/products":
+        handleProductsRoute($requestMethod);
+        break;
+    case preg_match('#^/products/(\d+)$#', $requestUri, $matches):
+        handleProductRoute($requestMethod, $matches[1]);
+        break;
+    default:
+        handleNotFoundRoute();
+        break;
 }

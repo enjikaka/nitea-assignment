@@ -2,20 +2,32 @@
 
 require_once __DIR__ . '/../db.php';
 
-class Product {
+class Product
+{
     private $conn;
     private $logFile = __DIR__ . '/../logs/error.log';
 
-    public function __construct() {
+    private function logError($message)
+    {
+        $logMessage = "[" . date("Y-m-d H:i:s") . "] " . $message . PHP_EOL;
+
+        if (!@error_log($logMessage, 3, $this->logFile)) {
+            error_log($logMessage);
+        }
+    }
+
+    public function __construct()
+    {
         try {
             $this->conn = (new Database())->connect();
         } catch (Exception $e) {
             $this->conn = null;
-            error_log("[" . date("Y-m-d H:i:s") . "] Connection failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Connection failed: " . $e->getMessage());
         }
     }
 
-    public function getSchema() : ?array {
+    public function getSchema(): ?array
+    {
         return [
             "type" => "object",
             "required" => ["name", "image", "price", "categories"],
@@ -40,7 +52,8 @@ class Product {
         ];
     }
 
-    public function getAllProducts() : ?array {
+    public function getAllProducts(): ?array
+    {
         try {
             $query = "SELECT * FROM products";
 
@@ -51,12 +64,13 @@ class Product {
             $stmt = $this->conn->query($query);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Query failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Query failed: " . $e->getMessage());
             return null;
         }
     }
 
-    public function getProductById($id) : ?array {
+    public function getProductById($id): ?array
+    {
         try {
             $query = "SELECT * FROM products WHERE id=:id";
 
@@ -69,12 +83,13 @@ class Product {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Query failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Query failed: " . $e->getMessage());
             return null;
         }
     }
 
-    public function getProductByName($name) : ?array {
+    public function getProductByName($name): ?array
+    {
         try {
             $query = "SELECT * FROM products WHERE name=:name";
 
@@ -87,12 +102,13 @@ class Product {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Query failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Query failed: " . $e->getMessage());
             return null;
         }
     }
 
-    public function addNewProduct($name, $image, $price, $categories) : void {
+    public function addNewProduct($name, $image, $price, $categories): void
+    {
         try {
             $query = "INSERT INTO products (name, image, price, categories) VALUES (?, ?, ?, ?)";
 
@@ -109,11 +125,12 @@ class Product {
             $stmt->bindParam(4, $categories, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            error_log("Query failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Query failed: " . $e->getMessage());
         }
     }
 
-    public function editProductName($id, $newValue) : void {
+    public function editProductName($id, $newValue): void
+    {
         try {
             $query = "UPDATE products SET name = ? WHERE id = ?";
 
@@ -126,11 +143,12 @@ class Product {
             $stmt->bindParam(2, $id, PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
-            error_log("Query failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Query failed: " . $e->getMessage());
         }
     }
 
-    public function editProductPrice($id, $newValue) : void {
+    public function editProductPrice($id, $newValue): void
+    {
         try {
             $query = "UPDATE products SET price = ? WHERE id = ?";
 
@@ -143,11 +161,12 @@ class Product {
             $stmt->bindParam(2, $id, PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
-            error_log("Query failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Query failed: " . $e->getMessage());
         }
     }
 
-    public function editProductImage($id, $newValue) : void {
+    public function editProductImage($id, $newValue): void
+    {
         try {
             $query = "UPDATE products SET imageUrl = ? WHERE id = ?";
 
@@ -160,11 +179,12 @@ class Product {
             $stmt->bindParam(2, $id, PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
-            error_log("Query failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Query failed: " . $e->getMessage());
         }
     }
 
-    public function editProductCategories($id, $newValue) : void {
+    public function editProductCategories($id, $newValue): void
+    {
         try {
             $query = "UPDATE products SET categories = ? WHERE id = ?";
 
@@ -177,11 +197,12 @@ class Product {
             $stmt->bindParam(2, $id, PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
-            error_log("Query failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Query failed: " . $e->getMessage());
         }
     }
 
-    public function deleteProductById($productId) : void {
+    public function deleteProductById($productId): void
+    {
         try {
             $query = "DELETE FROM products WHERE id = ?";
 
@@ -193,7 +214,7 @@ class Product {
             $stmt->bindParam(1, $productId, PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
-            error_log("Query failed: " . $e->getMessage(), 3, $this->logFile);
+            $this->logError("Query failed: " . $e->getMessage());
         }
     }
 }
