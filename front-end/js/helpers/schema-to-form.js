@@ -14,7 +14,7 @@ export function schemaToForm(schema) {
             const label = formatLabel(key);
             const input = createInput(key, field, isRequired);
             return `
-                <label>${label} ${input}</label>
+                <label>${input}<span>${label}</span></label>
             `;
         })
         .join('');
@@ -28,6 +28,13 @@ export function schemaToForm(schema) {
 }
 
 function formatLabel(key) {
+    return key
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/_/g, ' ')
+        .replace(/^./, str => str.toUpperCase());
+}
+
+function formatPlaceholder(key) {
     return key
         .replace(/([A-Z])/g, ' $1')
         .replace(/_/g, ' ')
@@ -55,7 +62,7 @@ function createInput(key, field, isRequired) {
             return `
                 <input type="text"
                     ${commonAttributes}
-                    ${field.description ? `placeholder="${field.description}"` : ''}
+                    ${field.description ? `placeholder="${formatPlaceholder(key)}"` : ''}
                 >
             `;
 

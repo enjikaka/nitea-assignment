@@ -1,5 +1,5 @@
 import { schemaToForm } from '../helpers/schema-to-form.js';
-import { html } from '../helpers/utils.js';
+import { html, linkStylesheet } from '../helpers/utils.js';
 
 class EditForm extends HTMLElement {
     constructor() {
@@ -20,6 +20,10 @@ class EditForm extends HTMLElement {
     }
 
     async fetchProduct() {
+        if (new URLSearchParams(window.location.search).size > 1) {
+            return;
+        }
+
         const response = await fetch(this.getAttribute('action-url') + '/' + this.getAttribute('entity-id'));
         const product = await response.json();
 
@@ -28,6 +32,11 @@ class EditForm extends HTMLElement {
 
     fillForm(product) {
         const form = this.sDOM.querySelector('form');
+
+        if (!form) {
+            return;
+        }
+
         const formData = new FormData(form);
 
         formData.forEach((value, key) => {
@@ -52,20 +61,9 @@ class EditForm extends HTMLElement {
         this.sDOM = this.attachShadow({ mode: 'closed' });
 
         this.sDOM.innerHTML = html`
-            <style>
-                :root {
-                    display: block;
-                    width: 100%;
-                    height: auto;
-                }
-
-                :host(:not([entity-id])) {
-                    background-color: red;
-                }
-            </style>
+            ${linkStylesheet(import.meta.url)}
+            ${schemaToForm(this.schema)}
         `;
-
-        this.sDOM.innerHTML += schemaToForm(this.schema);
 
         if (this.getAttribute('entity-id') !== "null") {
             const product = await this.fetchProduct();

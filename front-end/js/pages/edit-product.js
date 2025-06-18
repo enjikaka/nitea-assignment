@@ -50,4 +50,8 @@ if (qp.size === 1) {
 
     $output.textContent = 'Produkt uppdaterat:';
     $main.innerHTML += renderProductItemElement(updatedProduct);
+
+    const $newProductItem = document.querySelector('product-item');
+
+    $newProductItem.setAttribute('hide-actions', 'hide-actions');
 }

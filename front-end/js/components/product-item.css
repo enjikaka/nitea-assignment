@@ -5,6 +5,10 @@
 	view-transition-name: product-item;
 }
 
+:host([hide-actions]) footer {
+	display: none;
+}
+
 article {
 	background-color: var(--md-sys-color-surface);
 	display: flex;

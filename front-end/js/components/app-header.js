@@ -10,7 +10,7 @@ class AppHeader extends HTMLElement {
         this.sDOM.innerHTML = html`
             ${linkStylesheet(import.meta.url)}
             <header>
-                <strong>Frukthandlaren</strong>
+                <strong><a href="/">Frukthandlaren</a></strong>
             </header>
         `;
     }
