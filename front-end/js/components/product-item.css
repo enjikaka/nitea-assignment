@@ -6,28 +6,46 @@
 }
 
 article {
-	background-color: var(--green);
+	background-color: var(--md-sys-color-surface);
 	display: flex;
 	flex-flow: row nowrap;
-	gap: 1rem;
-	padding: 1rem;
-	border-radius: 0.5rem;
-	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+	height: 88px;
+	gap: 16px;
+	padding: 8px 16px;
+	box-sizing: border-box;
 	align-items: center;
+	color: var(--md-sys-color-on-surface);
+
+	&:hover {
+		background-color: var(--md-sys-color-secondary-container);
+	}
+}
+
+div {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1;
 }
 
 figure {
 	margin: 0;
 	padding: 0;
-	width: 100px;
-	height: 100px;
+	width: 40px;
+	height: 40px;
 	border-radius: 0.5rem;
-	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-	background-color: rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 3px 0 var(--md-sys-color-primary-container);
+	background-color: var(--md-sys-color-primary-container);
 }
 
-::slotted(img:empty) {
-	display: none;
+::slotted(img) {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 0.5rem;
+}
+
+::slotted([slot="name"]) {
+	font-size: 16px;
 }
 
 a[href^="/edit-product.html"] {

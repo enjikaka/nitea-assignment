@@ -36,9 +36,13 @@ class ProductList extends HTMLElement {
                     list-style: none;
                     display: flex;
                     flex-flow: column nowrap;
-                    gap: 1rem;
                     padding: 0 1rem;
                     margin: 0;
+                }
+
+                li {
+                    margin: 0;
+                    padding: 0;
                 }
             </style>
             <ol>

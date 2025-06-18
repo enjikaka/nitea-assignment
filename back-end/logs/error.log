@@ -1,1 +1,1 @@
-Query failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'test_db.products' doesn't exist
+Query failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'test_db.products' doesn't existQuery failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'imageUrl' in 'field list'Query failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'imageUrl' in 'field list'
