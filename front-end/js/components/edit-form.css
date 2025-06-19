@@ -65,23 +65,3 @@ input {
         outline: 2px solid var(--md-sys-color-primary);
     }
 }
-
-button {
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-    height: 40px;
-    border-radius: 20px;
-    border: none;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    padding: 0 24px;
-
-    &:hover {
-        opacity: calc(1 - 0.08);
-    }
-
-    &:active {
-        opacity: calc(1 - 0.1);
-    }
-}

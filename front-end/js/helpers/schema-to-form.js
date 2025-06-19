@@ -22,7 +22,7 @@ export function schemaToForm(schema) {
     return `
         <form class="schema-form">
             ${formFields}
-            <button type="submit">Submit</button>
+            <md-button><button type="submit">Submit</button></md-button>
         </form>
     `;
 }

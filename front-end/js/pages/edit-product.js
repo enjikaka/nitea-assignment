@@ -3,6 +3,7 @@ import '../components/edit-form.js';
 import '../components/product-item.js';
 
 import { renderProductItemElement } from '../helpers/render-product-item-element.js';
+import { hydrateProductItem } from '../helpers/hydrate-product-item.js';
 import { html } from '../helpers/utils.js';
 
 const qp = new URLSearchParams(document.location.search);
@@ -21,7 +22,7 @@ if (qp.size === 1) {
     const product = json.data;
 
     $editForm.fillForm(product);
-    $productItem.outerHTML = renderProductItemElement(product);
+    hydrateProductItem($productItem, id);
 } else { // Form is submitted
     $editForm.remove();
     $productItem.remove();

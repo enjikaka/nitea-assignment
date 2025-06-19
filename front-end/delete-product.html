@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ta bort produkt - Frukthandlaren</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/pages/edit-product.css">
+  </head>
+  <body>
+    <app-header></app-header>
+    <main>
+      <h1>Ta bort produkt</h1>
+      <product-item></product-item>
+      <p>Är du säker på att du vill ta bort produkten?</p>
+      <md-button><a href="?action=DELETE&productId=">Ja, ta bort produkt</a></md-button>
+      <md-button><a href="/">Avbryt</a></md-button>
+    </main>
+    <script type="module" src="js/pages/delete-product.js"></script>
+  </body>
+</html>

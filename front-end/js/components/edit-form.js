@@ -1,3 +1,5 @@
+import './md-button.js';
+
 import { schemaToForm } from '../helpers/schema-to-form.js';
 import { html, linkStylesheet } from '../helpers/utils.js';
 
