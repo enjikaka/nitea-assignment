@@ -35,6 +35,8 @@ class ProductItem extends HTMLElement {
                 </footer>
             </article>
         `;
+
+        this.style.viewTransitionName = `product-item-${this.getAttribute('product-id')}`;
     }
 }
 

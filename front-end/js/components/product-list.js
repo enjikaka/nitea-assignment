@@ -39,7 +39,7 @@ class ProductList extends HTMLElement {
                     list-style: none;
                     display: flex;
                     flex-flow: column nowrap;
-                    padding: 0 1rem;
+                    padding: 0;
                     margin: 0;
                 }
 
