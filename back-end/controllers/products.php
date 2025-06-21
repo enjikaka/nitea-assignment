@@ -65,10 +65,38 @@ class ProductsController
     public function addNewProduct(): void
     {
         try {
-            $name = $_POST['name'];
-            $image = $_POST['image'];
-            $price = $_POST['price'];
-            $categories = $_POST['categories'];
+            $inputData = json_decode(file_get_contents('php://input'), true);
+
+            if ($inputData === null) {
+                $this->jsonResponse([
+                    "status" => "error",
+                    "message" => "Data input is empty or invalid JSON"
+                ], 400);
+                return;
+            }
+
+            // Validate required fields
+            if (!isset($inputData['name']) || !isset($inputData['image']) || !isset($inputData['price']) || !isset($inputData['categories'])) {
+                $this->jsonResponse([
+                    "status" => "error",
+                    "message" => "Missing required fields: name, image, price, and categories are required"
+                ], 400);
+                return;
+            }
+
+            $name = $inputData['name'];
+            $image = $inputData['image'];
+            $price = $inputData['price'];
+            $categories = $inputData['categories'];
+
+            // Additional validation for empty values
+            if (empty($name) || empty($image) || empty($price) || empty($categories)) {
+                $this->jsonResponse([
+                    "status" => "error",
+                    "message" => "All fields must not be empty"
+                ], 400);
+                return;
+            }
 
             $this->product->addNewProduct($name, $image, $price, $categories);
 

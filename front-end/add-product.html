@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lägg till produkt - Frukthandlaren</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/pages/edit-product.css">
+  </head>
+  <body>
+    <app-header></app-header>
+    <main>
+      <h1>Lägg till produkt</h1>
+      <product-item hide-actions></product-item>
+      <edit-form
+        schema-url="http://localhost:8080/products.schema.json"
+        action-url="http://localhost:8080/products"
+        method="POST"
+      ></edit-form>
+      <output></output>
+    </main>
+    <script type="module" src="js/pages/add-product.js"></script>
+  </body>
+</html>

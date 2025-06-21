@@ -9,14 +9,14 @@ const qp = new URLSearchParams(document.location.search);
 
 const id = qp.get('productId') ?? qp.get('id');
 
-const $confirmLink = document.querySelector('md-button[href*="action=DELETE"]');
+const $deleteLink = document.querySelector('#delete-link');
 const $productItem = document.querySelector('product-item');
 
 async function hydratePage() {
-    console.log('hydratePage', id, $confirmLink);
+    console.log('hydratePage', id, $deleteLink);
 
-    if ($confirmLink) {
-        $confirmLink.setAttribute('href', $confirmLink.getAttribute('href') + id);
+    if ($deleteLink) {
+        $deleteLink.setAttribute('href', $deleteLink.getAttribute('href') + id);
     }
 
     if ($productItem) {
@@ -44,8 +44,10 @@ async function handleDeleteRequest() {
     }
 }
 
-if (id && qp.size === 1) {
-    hydratePage();
-} else {
-    handleDeleteRequest();
-}
+window.addEventListener('DOMContentLoaded', () => {
+    if (id && qp.size === 1) {
+        hydratePage();
+    } else {
+        handleDeleteRequest();
+    }
+});
