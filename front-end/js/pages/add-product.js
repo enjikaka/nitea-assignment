@@ -27,7 +27,8 @@ async function submitForm() {
 
     if (response.ok) {
         $output.textContent = 'Produkten har lagts till!';
-        hydrateProductItem($productItem, json.data[0].id);
+        const $newProductItem = await hydrateProductItem(json.data[0].id);
+        $productItem.parentElement.replaceChild($newProductItem, $productItem);
     } else {
         $output.textContent = 'Något gick fel!';
     }

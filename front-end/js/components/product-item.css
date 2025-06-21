@@ -5,10 +5,6 @@
 	view-transition-name: product-item;
 }
 
-:host([hide-actions]) footer {
-	display: none;
-}
-
 article {
 	background-color: var(--md-sys-color-surface);
 	display: flex;
@@ -54,4 +50,14 @@ figure {
 
 a[href^="/edit-product.html"] {
 	view-transition-name: edit-link;
+}
+
+footer {
+	display: flex;
+	flex-flow: row nowrap;
+	gap: 16px;
+}
+
+:host([hide-actions]) footer {
+	display: none;
 }

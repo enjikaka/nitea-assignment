@@ -27,8 +27,11 @@ class ProductList extends HTMLElement {
 
         const productItems = this.products
             .map(product => renderProductItemElement(product))
-            .map(productItem => `<li>${productItem}</li>`)
-            .join('');
+            .map(productItem => {
+                const $listItem = document.createElement('li');
+                $listItem.appendChild(productItem);
+                return $listItem;
+            });
 
         sDOM.innerHTML = html`
             <style>
@@ -45,10 +48,14 @@ class ProductList extends HTMLElement {
                     padding: 0;
                 }
             </style>
-            <ol>
-                ${productItems}
-            </ol>
+            <ol></ol>
         `;
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                sDOM.querySelector('ol').append(...productItems);
+            });
+        });
     }
 }
 

@@ -1,20 +1,49 @@
-::slotted(*) {
+:host {
     background-color: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
     height: 40px;
-    border-radius: 20px;
-    border: none;
+    border-radius: 40px;
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
-    padding: 8px 24px;
+    padding: 4px 24px;
     text-decoration: none;
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 8px;
+}
 
-    &:hover {
-        opacity: calc(1 - 0.08);
-    }
+:host(:hover) {
+    opacity: calc(1 - 0.08);
+}
 
-    &:active {
-        opacity: calc(1 - 0.1);
-    }
+:host(:active) {
+    opacity: calc(1 - 0.1);
+}
+
+:host([color-variant="secondary"]) {
+    background-color: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+:host([size-variant="small"]) {
+    height: 32px;
+    border-radius: 32px;
+    padding: 4px 16px;
+    font-size: 0.8rem;
+}
+
+::slotted(a) {
+    color: inherit;
+    text-decoration: none;
+}
+
+::slotted(button) {
+    all: unset;
+}
+
+::slotted([slot="icon"]) {
+    width: 24px;
+    height: 24px;
 }
