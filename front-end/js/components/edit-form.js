@@ -42,7 +42,15 @@ class EditForm extends HTMLElement {
         const formData = new FormData(form);
 
         formData.forEach((value, key) => {
-            form.querySelector(`[name="${key}"]`).value = product[key];
+            const input = form.querySelector(`[name="${key}"]`);
+            if (input) {
+                // Handle categories as array
+                if (key === 'categories' && Array.isArray(product[key])) {
+                    input.value = product[key].join(', ');
+                } else {
+                    input.value = product[key];
+                }
+            }
         });
 
         if (form.querySelector('input[name="id"]')) {

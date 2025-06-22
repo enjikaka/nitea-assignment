@@ -33,12 +33,16 @@ if (qp.size === 1) {
 
     $output.textContent = 'Uppdaterar produkt...';
 
+    // Convert categories string to array
+    const categoriesString = qp.get('categories');
+    const categories = categoriesString ? categoriesString.split(',').map(cat => cat.trim()).filter(cat => cat.length > 0) : [];
+
     const response = await fetch('http://localhost:8080/products/' + id, {
         method: 'PATCH',
         body: JSON.stringify({
             name: qp.get('name'),
-            price: qp.get('price'),
-            categories: qp.get('categories'),
+            price: parseFloat(qp.get('price')),
+            categories: categories,
             image: qp.get('image'),
         }),
         headers: {
@@ -47,7 +51,7 @@ if (qp.size === 1) {
     });
 
     const json = await response.json();
-    const updatedProduct = json.data[0];
+    const updatedProduct = json.data;
 
     $output.textContent = 'Produkt uppdaterat:';
     $main.append(renderProductItemElement(updatedProduct));

@@ -51,14 +51,6 @@ function createInput(key, field, isRequired) {
 
     switch (field.type) {
         case 'string':
-            if (key === 'categories') {
-                return `
-                    <input type="text"
-                        ${commonAttributes}
-                        placeholder="Enter categories separated by commas"
-                    >
-                `;
-            }
             return `
                 <input type="text"
                     ${commonAttributes}
@@ -73,6 +65,24 @@ function createInput(key, field, isRequired) {
                     step="0.01"
                     ${field.minimum !== undefined ? `min="${field.minimum}"` : ''}
                 >
+            `;
+
+        case 'array':
+            if (key === 'categories') {
+                return `
+                    <textarea
+                        ${commonAttributes}
+                        placeholder="Enter categories separated by commas (e.g., Frukt, Ekologisk, Citrus)"
+                        rows="3"
+                    ></textarea>
+                `;
+            }
+            return `
+                <textarea
+                    ${commonAttributes}
+                    placeholder="Enter values separated by commas"
+                    rows="3"
+                ></textarea>
             `;
 
         default:

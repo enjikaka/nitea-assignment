@@ -46,14 +46,19 @@ class ProductsController
         try {
             $result = $this->product->getProductById($productId);
 
-            $message = empty($result) ? "Product not found" : "Successfully retrieved product data";
-            $statusCode = empty($result) ? 404 : 200;
+            if (!$result) {
+                $this->jsonResponse([
+                    "status" => "error",
+                    "message" => "Product not found"
+                ], 404);
+                return;
+            }
 
             $this->jsonResponse([
                 "status" => "success",
-                "message" => $message,
-                "data" => $result[0]
-            ], $statusCode);
+                "message" => "Successfully retrieved product data",
+                "data" => $result
+            ]);
         } catch (Exception $e) {
             $this->jsonResponse([
                 "status" => "error",
@@ -98,22 +103,41 @@ class ProductsController
                 return;
             }
 
-            $this->product->addNewProduct($name, $image, $price, $categories);
-
-            $result = $this->product->getProductByName($name);
-            if (empty($result)) {
-                $message = "Adding new product failed";
-                $statusCode = 400;
-            } else {
-                $message = "Successfully added new product";
-                $statusCode = 201;
+            // Validate categories is an array
+            if (!is_array($categories)) {
+                $this->jsonResponse([
+                    "status" => "error",
+                    "message" => "Categories must be an array"
+                ], 400);
+                return;
             }
+
+            // Validate price is numeric
+            if (!is_numeric($price)) {
+                $this->jsonResponse([
+                    "status" => "error",
+                    "message" => "Price must be a number"
+                ], 400);
+                return;
+            }
+
+            $productId = $this->product->addNewProduct($name, $image, $price, $categories);
+
+            if (!$productId) {
+                $this->jsonResponse([
+                    "status" => "error",
+                    "message" => "Failed to add product"
+                ], 500);
+                return;
+            }
+
+            $result = $this->product->getProductById($productId);
 
             $this->jsonResponse([
                 "status" => "success",
-                "message" => $message,
+                "message" => "Successfully added new product",
                 "data" => $result
-            ], $statusCode);
+            ], 201);
         } catch (Exception $e) {
             $this->jsonResponse([
                 "status" => "error",
@@ -125,12 +149,12 @@ class ProductsController
     public function editProductData($productId): void
     {
         try {
-            if (empty($this->product->getProductById($productId))) {
+            if (!$this->product->getProductById($productId)) {
                 $this->jsonResponse([
-                    "status" => "success",
+                    "status" => "error",
                     "message" => "Product not found"
                 ], 404);
-                exit;
+                return;
             }
 
             $inputData = json_decode(file_get_contents('php://input'), true);
@@ -138,17 +162,35 @@ class ProductsController
             if ($inputData === null) {
                 $this->jsonResponse([
                     "status" => "error",
-                    "message" => "Data input is empty"
+                    "message" => "Data input is empty or invalid JSON"
                 ], 400);
-                exit;
+                return;
             }
 
             if (!isset($inputData['name']) && !isset($inputData['price']) && !isset($inputData['categories']) && !isset($inputData['image'])) {
                 $this->jsonResponse([
                     "status" => "error",
-                    "message" => "required data missing"
+                    "message" => "At least one field must be provided: name, price, categories, or image"
                 ], 422);
-                exit;
+                return;
+            }
+
+            // Validate price if provided
+            if (isset($inputData["price"]) && !is_numeric($inputData["price"])) {
+                $this->jsonResponse([
+                    "status" => "error",
+                    "message" => "Price must be a number"
+                ], 400);
+                return;
+            }
+
+            // Validate categories if provided
+            if (isset($inputData["categories"]) && !is_array($inputData["categories"])) {
+                $this->jsonResponse([
+                    "status" => "error",
+                    "message" => "Categories must be an array"
+                ], 400);
+                return;
             }
 
             if (isset($inputData["name"])) {
@@ -185,12 +227,12 @@ class ProductsController
     public function deleteProductById($productId): void
     {
         try {
-            if (empty($this->product->getProductById($productId))) {
+            if (!$this->product->getProductById($productId)) {
                 $this->jsonResponse([
-                    "status" => "success",
+                    "status" => "error",
                     "message" => "Product not found"
                 ], 404);
-                exit;
+                return;
             }
 
             $this->product->deleteProductById($productId);

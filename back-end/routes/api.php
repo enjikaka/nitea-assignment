@@ -13,8 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once __DIR__ . '/../controllers/products.php';
+require_once __DIR__ . '/../controllers/categories.php';
 
 $productsController = new ProductsController();
+$categoriesController = new CategoriesController();
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -79,6 +81,35 @@ function handleProductRoute($requestMethod, $productId)
     }
 }
 
+function handleCategoriesRoute($requestMethod)
+{
+    global $categoriesController;
+    switch ($requestMethod) {
+        case "GET":
+            $categoriesController->getAllCategories();
+            break;
+        case "POST":
+            $categoriesController->addCategory();
+            break;
+        default:
+            handleMethodNotAllowedRoute();
+            break;
+    }
+}
+
+function handleCategoryRoute($requestMethod, $categoryId)
+{
+    global $categoriesController;
+    switch ($requestMethod) {
+        case "GET":
+            $categoriesController->getCategoryById($categoryId);
+            break;
+        default:
+            handleMethodNotAllowedRoute();
+            break;
+    }
+}
+
 function handleNotFoundRoute()
 {
     http_response_code(404);
@@ -104,6 +135,12 @@ switch (true) {
         break;
     case preg_match('#^/products/(\d+)$#', $requestUri, $matches):
         handleProductRoute($requestMethod, $matches[1]);
+        break;
+    case $requestUri == "/categories":
+        handleCategoriesRoute($requestMethod);
+        break;
+    case preg_match('#^/categories/(\d+)$#', $requestUri, $matches):
+        handleCategoryRoute($requestMethod, $matches[1]);
         break;
     default:
         handleNotFoundRoute();
