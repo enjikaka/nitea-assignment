@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/category.php';
+require_once __DIR__ . '/../utils/sanitizer.php';
 
 class CategoriesController
 {
@@ -13,9 +14,12 @@ class CategoriesController
 
     private function jsonResponse($data, $statusCode = 200): void
     {
+        // Sanitize the data to prevent XSS attacks
+        $sanitizedData = Sanitizer::sanitizeData($data);
+
         http_response_code($statusCode);
         header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        echo json_encode($sanitizedData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 
     public function getAllCategories(): void
