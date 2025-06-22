@@ -8,3 +8,5 @@ Query failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'test_db
 [2025-06-21 16:49:53] Query failed: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'name' cannot be null
 [2025-06-21 16:50:07] Query failed: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'name' cannot be null
 [2025-06-21 16:50:09] Query failed: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'name' cannot be null
+[2025-06-21 21:43:47] Query failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'imageUrl' in 'field list'
+[2025-06-22 13:47:44] Query failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'imageUrl' in 'field list'

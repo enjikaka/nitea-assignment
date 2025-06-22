@@ -50,7 +50,7 @@ if (qp.size === 1) {
     const updatedProduct = json.data[0];
 
     $output.textContent = 'Produkt uppdaterat:';
-    $main.innerHTML += renderProductItemElement(updatedProduct);
+    $main.append(renderProductItemElement(updatedProduct));
 
     const $newProductItem = document.querySelector('product-item');
 

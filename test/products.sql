@@ -12,6 +12,6 @@ CREATE TABLE IF NOT EXISTS products (
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 INSERT INTO products (name, image, price, categories) VALUES
-('Äpple', 'apple.jpg', '5.99', 'Frukt,Ekologisk'),
-('Banan', 'banana.jpg', '4.50', 'Frukt,Ekologisk'),
-('Apelsin', 'orange.jpg', '6.25', 'Frukt,Citrus');
+('Äpple', 'img/apple.jpg', '5.99', 'Frukt,Ekologisk'),
+('Banan', 'img/banana.jpg', '4.50', 'Frukt,Ekologisk'),
+('Apelsin', 'img/orange.jpg', '6.25', 'Frukt,Citrus');
