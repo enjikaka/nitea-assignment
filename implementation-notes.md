@@ -18,3 +18,7 @@
 ## 2025-06-22 15:57
 
 - Lät Cursor (AI) ändra categories från sträng till array. Implementationen den gjorde på front-end är undermålig så planen där är att ändra HTMLTextAreaElement till [HTMLSelectElement med multipla val](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/multiple).
+
+## 2025-06-22 19:20
+
+- La till [output sanitization/escaping](https://benhoyt.com/writings/dont-sanitize-do-escape/) och verifierade att `<script>alert('Halloj')</script>` som titel på produkt inte ekeveras i JS.
