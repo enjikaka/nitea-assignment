@@ -2,25 +2,45 @@
 
 class Database
 {
+    private static $instance = null;
+    private static $connection = null;
+
     private $HOST = "db";
     private $USERNAME = "dev_user";
     private $PASSWORD = "dev_password";
     private $DBNAME = "test_db";
 
-    public $connection;
+    private function __construct()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
 
     public function connect()
     {
-        try {
-            $DSN = "mysql:host={$this->HOST};dbname={$this->DBNAME};charset=utf8";
+        if (self::$connection === null) {
+            try {
+                $DSN = "mysql:host={$this->HOST};dbname={$this->DBNAME};charset=utf8";
 
-            $this->connection = new PDO($DSN, $this->USERNAME, $this->PASSWORD);
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            error_log("Connection Error: " . $e->getMessage(), 3, '../../logs/error.log');
-            throw new Exception("Database connection failed: " . $e->getMessage());
+                self::$connection = new PDO($DSN, $this->USERNAME, $this->PASSWORD);
+                self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                error_log("Connection Error: " . $e->getMessage(), 3, '../../logs/error.log');
+                throw new Exception("Database connection failed: " . $e->getMessage());
+            }
         }
 
-        return $this->connection;
+        return self::$connection;
+    }
+
+    public function getConnection()
+    {
+        return $this->connect();
     }
 }

@@ -19,7 +19,7 @@ class Category
     public function __construct()
     {
         try {
-            $this->conn = (new Database())->connect();
+            $this->conn = Database::getInstance()->connect();
         } catch (Exception $e) {
             $this->conn = null;
             $this->logError("Connection failed: " . $e->getMessage());

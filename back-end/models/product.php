@@ -21,7 +21,7 @@ class Product
     public function __construct()
     {
         try {
-            $this->conn = (new Database())->connect();
+            $this->conn = Database::getInstance()->connect();
             $this->category = new Category();
         } catch (Exception $e) {
             $this->conn = null;
